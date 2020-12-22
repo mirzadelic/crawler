@@ -1,0 +1,76 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		table {
+			width: 100%;
+		}
+		td.imgCell {
+			vertical-align: middle;
+			text-align: center;
+		}
+		td.imgCell img {
+			height: 100px;
+			width: auto;
+		}
+		.greenText {
+			color: green;
+		}
+		.redText {
+			color: red;
+		}
+		.lineThrough {
+			text-decoration: line-through;
+		}
+		.centerText {
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<h3>{{ site.name }}: {{ site.site }}</h3>
+	<table border="1">
+		<thead>
+			<tr>
+				<th class="centerText" width="1%">Image</th>
+				<th>Name</th>
+				<th class="centerText">Price</th>
+				<th class="centerText">Status</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for item in updated_ads %}
+			<tr>
+				<td class="imgCell">
+					<a href="{{ item.url }}"><img src="{{ item.image }}"></a>
+				</td>
+				<td><a href="{{ item.url }}">{{ item.title }}</a></td>
+				<td class="centerText">
+					{% if item.price %}
+					<span class="greenText">{{ item.price[0] }}</span>
+					{% if item.price|length > 1 %}
+					<br />
+					<span class="redText lineThrough">
+						{{ item.price[1] }}
+					</span>
+					{% endif %}
+					{% endif %}
+				</td>
+				<td class="centerText">UPDATED</td>
+			</tr>
+			{% endfor %}
+			{% for item in new_ads %}
+			<tr>
+				<td class="imgCell">
+					<a href="{{ item.url }}"><img src="{{ item.image }}"></a>
+				</td>
+				<td><a href="{{ item.url }}">{{ item.title }}</a></td>
+				<td class="centerText">{% if item.price %}{{ item.price[0] }}{% endif %}</td>
+				<td class="centerText">NEW</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</body>
+</html>
