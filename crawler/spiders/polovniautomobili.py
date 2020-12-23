@@ -15,7 +15,9 @@ class PolovniautomobiliSpider(BaseSpider, scrapy.Spider):
 
     def __init__(self, site_id, **kwargs):
         super().__init__(**kwargs)
-        self.site = session.query(Site).filter(Site.id == int(site_id)).one_or_none()
+        self.site = session.query(Site).filter(
+            Site.id == int(site_id)
+        ).one_or_none()
         if self.site:
             self.start_urls = [self.site.url]
 
@@ -33,7 +35,8 @@ class PolovniautomobiliSpider(BaseSpider, scrapy.Spider):
         for ad in ads:
             yield self.fetch_ad(ad)
 
-        next_url = response.css('ul.uk-pagination li a[rel="next"]::attr(href)').get()
+        next_url = response.css(
+            'ul.uk-pagination li a[rel="next"]::attr(href)').get()
         if next_url:
             yield scrapy.Request(
                 url=f'{self.base_url}{next_url}',
@@ -42,7 +45,10 @@ class PolovniautomobiliSpider(BaseSpider, scrapy.Spider):
 
     def fetch_ad(self, ad_id):
         url = f'https://www.polovniautomobili.com/auto-oglasi/{ad_id}/ad'
-        return scrapy.Request(url=url, callback=self.parse_ad, meta={'ad_id': ad_id})
+        return scrapy.Request(
+            url=url,
+            callback=self.parse_ad, meta={'ad_id': ad_id}
+        )
 
     def parse_ad(self, response):
         content = response.css('div.uk-container.body')

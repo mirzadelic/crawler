@@ -1,4 +1,3 @@
-import scrapy
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
@@ -18,12 +17,14 @@ def main():
 
     sites = session.query(Site).filter(Site.active.is_(True))
     if sites.count() == 0:
-        print('No site urls added. Use "python create_site_url.py" command to add url.')
+        print(
+            'No site urls added. '
+            'Use "python create_site_url.py" command to add url.'
+        )
     for site in sites:
         process.crawl(SPIDERS_MAP[site.site], site_id=site.id)
 
     process.start()
-
 
 
 if __name__ == '__main__':

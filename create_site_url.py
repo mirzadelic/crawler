@@ -9,8 +9,9 @@ from run import SPIDERS_MAP
 
 create_tables()
 
-email_regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+
 def validate_email(email):
+    email_regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
     if not re.search(email_regex, email):
         sys.exit(f'Email address not valid: {email}.')
     return email
@@ -34,7 +35,7 @@ def main():
     session.commit()
 
     print(f'Site "{name}" added.')
-    print(f'Run "python run.py" to run worker to get new ads.')
+    print('Run "python run.py" to run worker to get new ads.')
 
 
 if __name__ == '__main__':

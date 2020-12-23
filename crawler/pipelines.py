@@ -16,8 +16,8 @@ class CrawlerPipeline:
         print(f'Closing spider: {spider.site}')
         if self.new_ads or self.updated_ads:
             print(
-                f'Sending {len(self.new_ads)} new and ' \
-                f'{len(self.updated_ads)} updated ads to: {spider.site.recipients}.'
+                f'Sending {len(self.new_ads)} new and {len(self.updated_ads)}'
+                f' updated ads to: {spider.site.recipients}.'
             )
             site = spider.site
             body = generate_mail({

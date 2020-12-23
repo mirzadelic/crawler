@@ -40,7 +40,8 @@ class Ad(Base):
     image = Column(String)
 
     created_date = Column(DateTime, default=datetime.utcnow)
-    updated_date = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_date = Column(
+        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     def __repr__(self):
         return f'<Ad ({self.source_id}, {self.title})>'
