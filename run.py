@@ -4,13 +4,15 @@ from scrapy.utils.project import get_project_settings
 from crawler.db import session
 from crawler.db.models import Site, create_tables
 from crawler.spiders.kupujemprodajem import KupujemprodajemSpider
+from crawler.spiders.nekretnine import NekretnineSpider
 from crawler.spiders.polovniautomobili import PolovniautomobiliSpider
 
 create_tables()
 
 SPIDERS_MAP = {
     'polovniautomobili.com': PolovniautomobiliSpider,
-    'kupujemprodajem.com': KupujemprodajemSpider
+    'kupujemprodajem.com': KupujemprodajemSpider,
+    'nekretnine.rs': NekretnineSpider
 }
 
 

@@ -14,6 +14,9 @@
 			height: 100px;
 			width: auto;
 		}
+		td.absorbing-column {
+			white-space: nowrap;
+		}
 		.greenText {
 			color: green;
 		}
@@ -46,16 +49,16 @@
 					<a href="{{ item.url }}"><img src="{{ item.image }}"></a>
 				</td>
 				<td><a href="{{ item.url }}">{{ item.title }}</a></td>
-				<td class="centerText">
-					{% if item.price %}
-					<span class="greenText">{{ item.price[0] }}</span>
+				<td class="absorbing-column centerText">
+				{% if item.price %}
+					<div class="greenText">{{ item.price[0] }}</div>
 					{% if item.price|length > 1 %}
-					<br />
-					<span class="redText lineThrough">
-						{{ item.price[1] }}
-					</span>
+						<hr />
+						{% for price in item.price[1:] %}
+							<div class="redText lineThrough">{{ price }}</div>
+						{% endfor %}
 					{% endif %}
-					{% endif %}
+				{% endif %}
 				</td>
 				<td class="centerText">UPDATED</td>
 			</tr>

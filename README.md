@@ -8,6 +8,7 @@ It uses the Postgres database to store ads and sites/URLs.
 Available websites:
 - polovniautomobili.com
 - kupujemprodajem.com
+- nekretnine.rs
 
 ## Instalation
 Create virtualenv and install requirements:

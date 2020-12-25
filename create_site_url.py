@@ -20,7 +20,7 @@ def validate_email(email):
 def main():
     print('--- Enter info ---')
 
-    site = input("Site (polovniautomobili.com, kupujemprodajem.com): ")
+    site = input("Site (polovniautomobili.com, kupujemprodajem.com, nekretnine.rs): ")
     if site not in SPIDERS_MAP.keys():
         sys.exit('Entered site not available.')
     url = input("URL of first page to crawl: ")
