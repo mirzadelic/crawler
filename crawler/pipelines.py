@@ -1,6 +1,10 @@
+import logging
+
 from .db import session
 from .db.models import Ad
 from .utils import generate_mail, send_mail
+
+logger = logging.getLogger('crawler')
 
 
 class CrawlerPipeline:
@@ -10,24 +14,25 @@ class CrawlerPipeline:
         self.new_ads = []
 
     def open_spider(self, spider):
-        print(f'Opening spider: {spider.site}')
+        logger.warning(f'Opened spider for site: {spider.site.name}.')
 
     def close_spider(self, spider):
-        print(f'Closing spider: {spider.site}')
+        site = spider.site
         if self.new_ads or self.updated_ads:
-            print(
+            logger.warning(
                 f'Sending {len(self.new_ads)} new and {len(self.updated_ads)}'
-                f' updated ads to: {spider.site.recipients}.'
+                f' updated ads to: {site.recipients} for site: {site.name}.'
             )
-            site = spider.site
             body = generate_mail({
                 'new_ads': self.new_ads,
                 'updated_ads': self.updated_ads,
                 'site': site
             })
             send_mail(f'Ads for: {site.name}', site.recipients, body)
+        else:
+            logger.warning(f'No ads to send for site: {site.name}.')
 
-        print(f'Closed spider: {spider.site}')
+        logger.warning(f'Closed spider for site: {site.name}.')
 
     def process_item(self, item, spider):
 

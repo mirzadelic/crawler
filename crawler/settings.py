@@ -121,7 +121,7 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-LOG_ENABLED = os.getenv('LOG_ENABLED', 'False') == 'True'
+LOG_LEVEL = os.getenv('LOG_LEVEL', 'WARNING')
 
 DATABASE_URL = os.getenv('DATABASE_URL')
 TEMPLATES_DIR = '{}/templates/'.format(os.path.dirname(__file__))
