@@ -1,8 +1,10 @@
+import uuid
 from datetime import datetime
 
 from scrapy.utils.project import get_project_settings
 from sqlalchemy import (ARRAY, VARCHAR, Boolean, Column, DateTime, ForeignKey,
                         Integer, String, create_engine)
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
 
 settings = get_project_settings()
@@ -17,7 +19,7 @@ def create_tables():
 class Site(Base):
     __tablename__ = 'sites'
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True)
     name = Column(VARCHAR(50), nullable=False)
     site = Column(VARCHAR(50), nullable=False)
     url = Column(String, nullable=False)
@@ -31,8 +33,8 @@ class Site(Base):
 class Ad(Base):
     __tablename__ = 'ads'
 
-    id = Column(Integer, primary_key=True, index=True)
-    site_id = Column(Integer, ForeignKey(Site.id), nullable=False, index=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True)
+    site_id = Column(UUID(as_uuid=True), ForeignKey(Site.id), nullable=False, index=True)
     source_id = Column(VARCHAR(50), nullable=False, index=True)
     url = Column(String, nullable=False)
     title = Column(VARCHAR(255), nullable=False)

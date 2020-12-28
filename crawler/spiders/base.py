@@ -8,9 +8,7 @@ class BaseSpider(Spider):
     site = None
 
     def __init__(self, site_id, **kwargs):
-        self.site = session.query(Site).filter(
-            Site.id == int(site_id)
-        ).one_or_none()
+        self.site = session.query(Site).filter(Site.id == site_id).one_or_none()
         if self.site:
             self.start_urls = [self.site.url]
 
