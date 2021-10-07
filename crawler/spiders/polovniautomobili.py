@@ -1,5 +1,6 @@
-from crawler.items import Item
 from scrapy import Request
+
+from crawler.items import Item
 
 from .base import BaseSpider
 
@@ -41,15 +42,18 @@ class PolovniautomobiliSpider(BaseSpider):
 
     def parse_ad(self, response):
         content = response.css('div.uk-container.body')
-
-        title = content.css('h1.h1-classified-title::text').get().strip()
+        title = content.css('div.table-cell-left > h1::text').get().strip()
         image = content.css('ul#image-gallery li img::attr(src)').get().strip()
 
-        price = content.css('div.price-item-discount::text').extract()
-        if price:
-            price = next((p.strip() for p in price if p.strip()))
-        else:
-            price = content.css('div.price-item::text').get().strip()
+        # old way
+        # price = content.css('div.price-item-discount::text').extract()
+        # if price:
+        #     price = next((p.strip() for p in price if p.strip()))
+        # else:
+        #     price = content.css('div.price-item::text').get().strip()
+
+        # new way
+        price = content.css('span.priceClassified::text').get().strip()
 
         item = Item()
         item['site'] = self.site
