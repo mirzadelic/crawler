@@ -10,7 +10,7 @@ settings = get_project_settings()
 
 
 def generate_mail(context):
-    env = Environment(loader=FileSystemLoader(settings.get('TEMPLATES_DIR')))
+    env = Environment(loader=FileSystemLoader(settings.get("TEMPLATES_DIR")))
     template = env.get_template("email.html")
     html = template.render(**context)
 
@@ -18,16 +18,16 @@ def generate_mail(context):
 
 
 def send_mail(subject, receivers, body):
-    SMTP_SERVER = settings.get('SMTP_SERVER')
-    SMTP_PORT = settings.get('SMTP_PORT')
-    SMTP_USERNAME = settings.get('SMTP_USERNAME')
-    SMTP_PASSWORD = settings.get('SMTP_PASSWORD')
+    SMTP_SERVER = settings.get("SMTP_SERVER")
+    SMTP_PORT = settings.get("SMTP_PORT")
+    SMTP_USERNAME = settings.get("SMTP_USERNAME")
+    SMTP_PASSWORD = settings.get("SMTP_PASSWORD")
 
-    message = MIMEMultipart('alternative')
-    message['Subject'] = subject
-    message['From'] = SMTP_USERNAME
-    message['To'] = ', '.join(receivers)
-    html_body = MIMEText(body, 'html')
+    message = MIMEMultipart("alternative")
+    message["Subject"] = subject
+    message["From"] = SMTP_USERNAME
+    message["To"] = ", ".join(receivers)
+    html_body = MIMEText(body, "html")
     message.attach(html_body)
 
     context = ssl.create_default_context()

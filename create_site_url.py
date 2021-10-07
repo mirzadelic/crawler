@@ -11,23 +11,23 @@ create_tables()
 
 
 def validate_email(email):
-    email_regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+    email_regex = "^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$"
     if not re.search(email_regex, email):
-        sys.exit(f'Email address not valid: {email}.')
+        sys.exit(f"Email address not valid: {email}.")
     return email
 
 
 def main():
-    print('--- Enter info ---')
+    print("--- Enter info ---")
 
     site = input("Site (polovniautomobili.com, kupujemprodajem.com, nekretnine.rs): ")
     if site not in SPIDERS_MAP.keys():
-        sys.exit('Entered site not available.')
+        sys.exit("Entered site not available.")
     url = input("URL of first page to crawl: ")
     if site not in url:
-        sys.exit('Entered URL not valid.')
+        sys.exit("Entered URL not valid.")
     recipients = input("Recipients email (separated by comma for multi): ")
-    recipients = [validate_email(r.strip()) for r in recipients.split(',')]
+    recipients = [validate_email(r.strip()) for r in recipients.split(",")]
     name = input("Enter name/title of site settings(example: Ads for car): ")
 
     s = Site(name=name, site=site, url=url, recipients=recipients)
@@ -38,5 +38,5 @@ def main():
     print('Run "python run.py" to run worker to get new ads.')
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
