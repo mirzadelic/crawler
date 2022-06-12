@@ -1,5 +1,3 @@
-from urllib.parse import parse_qsl, urlencode, urlparse
-
 from crawler.items import Item
 from scrapy import Request, Selector
 
@@ -12,7 +10,7 @@ class NekretnineSpider(BaseSpider):
     base_url = "https://www.nekretnine.rs"
 
     def parse(self, response):
-        ads = response.css("div.offer-container div.offer").getall()
+        ads = response.css("div.offer-container div.row.offer").getall()
         for ad_html in ads:
             yield self.parse_ad(ad_html)
 
