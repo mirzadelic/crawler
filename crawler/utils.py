@@ -1,8 +1,6 @@
-import smtplib
-import ssl
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import From, To, Subject, HtmlContent, Mail
+import urllib.request as urllib
 from jinja2 import Environment, FileSystemLoader
 from scrapy.utils.project import get_project_settings
 
@@ -18,20 +16,25 @@ def generate_mail(context):
 
 
 def send_mail(subject, receivers, body):
-    SMTP_SERVER = settings.get("SMTP_SERVER")
-    SMTP_PORT = settings.get("SMTP_PORT")
-    SMTP_USERNAME = settings.get("SMTP_USERNAME")
-    SMTP_PASSWORD = settings.get("SMTP_PASSWORD")
+    EMAIL_FROM = settings.get("EMAIL_FROM")
+    SENDGRID_API_KEY = settings.get("SENDGRID_API_KEY")
 
-    message = MIMEMultipart("alternative")
-    message["Subject"] = subject
-    message["From"] = SMTP_USERNAME
-    message["To"] = ", ".join(receivers)
-    html_body = MIMEText(body, "html")
-    message.attach(html_body)
+    sendgrid_client = SendGridAPIClient(api_key=SENDGRID_API_KEY)
+    from_email = From(EMAIL_FROM)
+    to_emails = [To(receiver) for receiver in receivers]
+    subject = Subject(subject)
+    html_content = HtmlContent(body)
 
-    context = ssl.create_default_context()
+    message = Mail(
+        from_email=from_email,
+        to_emails=to_emails,
+        subject=subject,
+        plain_text_content=None,
+        html_content=html_content,
+    )
 
-    with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT, context=context) as server:
-        server.login(SMTP_USERNAME, SMTP_PASSWORD)
-        server.sendmail(SMTP_USERNAME, receivers, message.as_string())
+    try:
+        sendgrid_client.send(message=message)
+    except urllib.HTTPError as e:
+        print(e.read())
+        exit()
