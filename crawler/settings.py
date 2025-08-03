@@ -34,9 +34,7 @@ USER_AGENTS = [
         "Safari/537.36"
     ),  # chrome
     (
-        "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) "
-        "Gecko/20100101 "
-        "Firefox/55.0"
+        "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"
     ),  # firefox
     (
         "Mozilla/5.0 (X11; Linux x86_64) "
@@ -102,9 +100,10 @@ DOWNLOADER_MIDDLEWARES = {
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
-# EXTENSIONS = {
-#    'scrapy.extensions.telnet.TelnetConsole': None,
-# }
+EXTENSIONS = {
+    "crawler.extensions.SentryLogging": 500,
+    # 'scrapy.extensions.telnet.TelnetConsole': None,
+}
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
@@ -143,6 +142,6 @@ TEMPLATES_DIR = "{}/templates/".format(os.path.dirname(__file__))
 # SMTP_USERNAME = os.getenv("SMTP_USERNAME", "")
 # SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
 EMAIL_FROM = os.getenv("EMAIL_FROM", "")
-SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY", "")
+RESEND_API_KEY = os.getenv("RESEND_API_KEY", "")
 
 SENTRY_DSN = os.getenv("SENTRY_DSN", None)
