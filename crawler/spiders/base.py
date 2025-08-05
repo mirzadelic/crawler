@@ -1,6 +1,6 @@
 from crawler.db import session
 from crawler.db.models import Site
-from scrapy import Request, Spider
+from scrapy import Spider, Request
 from scrapy.spidermiddlewares.httperror import HttpError
 from twisted.internet.error import (
     DNSLookupError,
@@ -21,30 +21,7 @@ class BaseSpider(Spider):
 
     def start_requests(self):
         for url in self.start_urls:
-            print(url)
-            # Add headers to mimic a real browser
             yield Request(url, callback=self.parse, errback=self.handle_error)
-            # headers = {
-            #     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-            #     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-            #     "Accept-Language": "en-US,en;q=0.5",
-            #     "Accept-Encoding": "gzip, deflate",
-            #     "Connection": "keep-alive",
-            #     "Upgrade-Insecure-Requests": "1",
-            #     "Sec-Fetch-Dest": "document",
-            #     "Sec-Fetch-Mode": "navigate",
-            #     "Sec-Fetch-Site": "none",
-            #     "Cache-Control": "max-age=0",
-            #     "DNT": "1",
-            #     "Sec-GPC": "1",
-            # }
-            # yield Request(
-            #     url,
-            #     headers=headers,
-            #     callback=self.parse,
-            #     errback=self.handle_error,
-            #     meta={"handle_httpstatus_list": [403]},  # Don't treat 403 as error
-            # )
 
     def handle_error(self, failure):
         print(f"Request failed: {failure.request.url}")
