@@ -15,7 +15,12 @@ class BaseSpider(Spider):
     def start_requests(self):
         for url in self.start_urls:
             print(url)
-            yield Request(url, callback=self.parse)
+            yield Request(url, callback=self.parse, errback=self.handle_error)
+
+    def handle_error(self, failure):
+        print(f"Request failed: {failure.request.url}")
+        print(f"Error: {failure.value}")
+        print(f"Error type: {failure.type}")
 
     def get_next_url(self, response):
         raise NotImplemented
