@@ -22,7 +22,29 @@ class BaseSpider(Spider):
     def start_requests(self):
         for url in self.start_urls:
             print(url)
+            # Add headers to mimic a real browser
             yield Request(url, callback=self.parse, errback=self.handle_error)
+            # headers = {
+            #     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            #     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+            #     "Accept-Language": "en-US,en;q=0.5",
+            #     "Accept-Encoding": "gzip, deflate",
+            #     "Connection": "keep-alive",
+            #     "Upgrade-Insecure-Requests": "1",
+            #     "Sec-Fetch-Dest": "document",
+            #     "Sec-Fetch-Mode": "navigate",
+            #     "Sec-Fetch-Site": "none",
+            #     "Cache-Control": "max-age=0",
+            #     "DNT": "1",
+            #     "Sec-GPC": "1",
+            # }
+            # yield Request(
+            #     url,
+            #     headers=headers,
+            #     callback=self.parse,
+            #     errback=self.handle_error,
+            #     meta={"handle_httpstatus_list": [403]},  # Don't treat 403 as error
+            # )
 
     def handle_error(self, failure):
         print(f"Request failed: {failure.request.url}")
@@ -34,7 +56,23 @@ class BaseSpider(Spider):
             response = failure.value.response
             print(f"HTTP Error - Status code: {response.status}")
             print(f"Response headers: {response.headers}")
-            print(f"Response body: {response.body}")  # First 500 chars
+
+            # Decode response body for better readability
+            try:
+                body_text = response.body.decode("utf-8")
+                print(f"Response body (first 1000 chars): {body_text[:1000]}")
+
+                # Check if it's a Cloudflare block page
+                if "cloudflare" in body_text.lower() and "blocked" in body_text.lower():
+                    print("⚠️  DETECTED: Cloudflare is blocking this request")
+                    print("Consider using:")
+                    print("- Rotating user agents")
+                    print("- Adding delays between requests")
+                    print("- Using scrapy-splash or selenium")
+                    print("- Implementing CAPTCHA solving")
+
+            except UnicodeDecodeError:
+                print(f"Response body (raw bytes, first 500): {response.body[:500]}")
 
         # Check for DNS lookup failures
         elif failure.check(DNSLookupError):
