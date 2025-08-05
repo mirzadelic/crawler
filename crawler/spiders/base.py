@@ -14,6 +14,7 @@ class BaseSpider(Spider):
 
     def start_requests(self):
         for url in self.start_urls:
+            print(url)
             yield Request(url, callback=self.parse)
 
     def get_next_url(self, response):
