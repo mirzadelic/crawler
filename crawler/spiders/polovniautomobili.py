@@ -11,6 +11,7 @@ class PolovniautomobiliSpider(BaseSpider):
     base_url = "https://www.polovniautomobili.com"
 
     def parse(self, response):
+        print("aaaaaaaaaaa")
         ads = set(
             response.css(
                 "div#search-results [data-classifiedid]::attr(data-classifiedid)"
