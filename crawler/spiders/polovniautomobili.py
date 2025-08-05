@@ -25,7 +25,9 @@ class PolovniautomobiliSpider(BaseSpider):
             yield Request(url=next_url, callback=self.parse)
 
     def get_next_url(self, response):
+        print("AAAA")
         next_url = response.css('ul.uk-pagination li a[rel="next"]::attr(href)').get()
+        print(next_url)
         if next_url:
             return f"{self.base_url}{next_url}"
 
