@@ -34,7 +34,7 @@ class NekretnineSpider(BaseSpider):
         url = title_elem.css("::attr(href)").get().strip()
         url = f"{self.base_url}{url}"
         source_id = url.rsplit("/", 2)[1]
-        image = selector.css("picture.advert-picture img::attr(data-src)").get().strip()
+        image = selector.css("picture.advert-picture img::attr(src)").get().strip()
         price = selector.css("p.offer-price span::text").get().strip()
 
         item = Item()
